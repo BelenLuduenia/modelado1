@@ -1,0 +1,308 @@
+﻿@page "/cursos"
+    <!--direccion--> <!--1-->
+<!--dentro del page va todo lo que es visual-->
+
+
+
+
+<h3> Cursos Varios</h3> <!--titulo-->
+
+<br />
+
+<a class=" btn btn-success" href="cursos/crear">Nuevo</a>
+
+<br />
+
+
+<table>
+
+    <tr>
+
+        <th> Id</th>
+        <!--titulo columnas-->
+        <th> Nombre Curso</th>
+        <th> Tutor Curso</th>
+        <th> Resumen</th>
+
+    </tr>
+
+    @if (cursos == null)
+    {
+        <tr> Cargando....</tr>
+    }
+
+
+    else if (cursos.Count == 0)
+    {
+        <tr>No existen cursos</tr>
+
+    }
+
+
+    else
+    {
+
+        @foreach (var item in cursos)
+        {
+
+            <tr>
+
+                <td>@item.Id</td>
+                <td>@item.NombreCurso</td>
+                <td>@item.TutorCurso</td>
+                <td>@item.Resumen</td>
+                <td>
+                    <a class="btn btn-success"
+                       href="cursos/editar/@item.Id/
+                       @item.NombreCurso/@item.TutorCurso/@item.Resumen">Editar</a>
+                </td>
+
+                <td> <button class="btn btn-warning" @onclick="()=>Eliminar(item)">Eliminar</button> </td>
+
+            </tr>
+        }
+
+    }
+
+</table>
+
+<Confirmacion @ref="confirmacion"
+              onConfirm="GrabarEliminar"
+              onCancel="Cancelar"
+              Titulo=" BORRAR"
+              textCancelar="Salir"
+              textOk="Aceptar">
+
+    <div>¿Desea eliminar el pais @eliminarCurso.NombreCurso?</div>
+
+
+
+</Confirmacion>
+
+
+
+@* @if (nuevo)
+    {
+
+        @if (editar || eliminar)
+        {
+            Cancelar();
+            nuevo = true;
+
+        }
+        <br />
+        <h3> nuevo Curso</h3>
+        <br />
+
+        <input placeholder=" Id de curso" @bind="ID" />
+        <input placeholder=" Nombre de curso" @bind="Nomcurso" />
+        <input placeholder=" Tutor de curso" @bind="Tutcurso" />
+        <input placeholder=" Resumen de curso" @bind="Rescurso" />
+
+        <button class=" btn btn-success " @onclick="GrabarNuevoCurso">Grabar</button>
+
+        <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
+    }    *@
+
+@*
+
+
+    @if (editar)
+    {
+
+        <br />
+        <h3> Editar Curso</h3>
+        <br />
+
+        <input placeholder=" Id de curso" @bind="ID" />
+        <input placeholder=" Nombre de curso" @bind="Nomcurso" />
+        <input placeholder=" Tutor de curso" @bind="Tutcurso" />
+        <input placeholder=" Resumen de curso" @bind="Rescurso" />
+
+        <button class=" btn btn-success " @onclick="GrabarEditar">Grabar</button>
+
+        <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
+    }
+
+    @if (eliminar)
+    {
+
+        <br />
+        <h3> Eliminar Curso</h3>
+        <br />
+
+        <input placeholder=" Id de curso" @bind="ID" />
+        <input placeholder=" Nombre de curso" @bind="Nomcurso" />
+        <input placeholder=" Tutor de curso" @bind="Tutcurso" />
+        <input placeholder=" Resumen de curso" @bind="Rescurso" />
+
+        <button class=" btn btn-success " @onclick="GrabarEliminar">Eliminar</button>
+
+        <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
+    }
+
+*@
+
+
+@code {
+
+    // List<Curso> cursos = new List<Curso>();
+
+
+    //List<Curso> cursos = new();
+
+    List<modelado1.Comunes.datos.Entidades.Curso> cursos;
+
+    Confirmacion confirmacion;
+    string ID = "";
+    string Nomcurso = "";
+    string Tutcurso = "";
+    string Rescurso = "";
+    // bool nuevo = false;
+    // bool editar = false;
+    //  bool eliminar = false;
+    modelado1.Comunes.datos.Entidades.Curso eliminarCurso;
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+
+
+        //ask.Delay(10000);
+
+        cursos = new()
+        {
+                new modelado1.Comunes.datos.Entidades.Curso() { Id = 1.ToString(), NombreCurso = "Secretariado Administrativo", TutorCurso = "Leonardo Sanchez", Resumen = "en este curso podras capacitarte..." },
+                new modelado1.Comunes.datos.Entidades.Curso() { Id = 2.ToString(), NombreCurso = "auxiliar de farmacia", TutorCurso = "Fabiana Piñero", Resumen = "este curso le permitira al farmaceutico..." },
+                new modelado1.Comunes.datos.Entidades.Curso() { Id = 3.ToString(), NombreCurso = "auxiliar de maestra jardinera", TutorCurso = "Tereza Ramirez", Resumen = "este curso se orienta al cuidado, acompañamiento..." }
+
+
+            };
+
+
+    }
+
+    private void GrabarNuevoCurso()
+    {
+
+        modelado1.Comunes.datos.Entidades.Curso curso = new();
+        //<!--instanciamos un curso nuevo-->
+
+        curso.Id = ID;
+        //<!--las propiedades-->
+        curso.NombreCurso = Nomcurso;
+        curso.TutorCurso = Tutcurso;
+        curso.Resumen = Rescurso;
+
+        cursos.Add(curso);
+
+        Cancelar();
+
+
+    }
+
+
+
+
+
+    //private void Editar(modelado1.Comunes.datos.Entidades.Curso cursoEditar)
+    //
+    /*
+    if (nuevo || eliminar)
+    {
+        Cancelar();
+
+        editar = true;
+
+    }
+    */
+    //editar = true;
+    //ID = cursoEditar.Id;
+    // Nomcurso = cursoEditar.NombreCurso;
+    // Tutcurso = cursoEditar.TutorCurso;
+    // Rescurso = cursoEditar.Resumen;
+    //editarCurso = cursoEditar;
+
+    /*
+       private void GrabarEditar()
+       {
+
+           cursos.Remove(editarCurso);
+           cursos.Add(new modelado1.Comunes.datos.Entidades.Curso() { Id = ID, NombreCurso = Nomcurso, TutorCurso = Tutcurso, Resumen = Rescurso });
+           Cancelar();
+
+       } */
+
+
+
+    private void Eliminar(modelado1.Comunes.datos.Entidades.Curso cursoEliminar)
+
+    {  /*
+    if (nuevo || editar)
+    {
+        Cancelar();
+
+        eliminar = true;
+
+    }
+    */
+
+
+
+        // eliminar = true;
+
+        confirmacion.Mostrar();
+
+
+        ID = cursoEliminar.Id;
+        Nomcurso = cursoEliminar.NombreCurso;
+        Tutcurso = cursoEliminar.TutorCurso;
+        Rescurso = cursoEliminar.Resumen;
+        eliminarCurso = cursoEliminar;
+
+    }
+
+
+
+    private void GrabarEliminar()
+    {
+
+        cursos.Remove(eliminarCurso);
+
+        Cancelar();
+
+    }
+
+
+    private void Cancelar()
+    {
+        confirmacion.Ocultar();
+
+
+        eliminarCurso = null;
+
+
+        /*
+        nuevo = false;
+        editar = false;
+        eliminar = false;
+        ID = "";
+        Nomcurso = "";
+        Tutcurso = "";
+        Rescurso = "";
+        */
+
+
+    }
+
+
+
+
+
+}
+
+
+
+

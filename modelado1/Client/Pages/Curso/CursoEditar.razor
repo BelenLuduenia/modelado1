@@ -1,0 +1,54 @@
+﻿@page "/cursos/editar/{ID}/{Nomcurso}/{Tutcurso}/{Rescurso}"
+   <!---->
+@inject NavigationManager   navigationManager
+
+<h2>Modificar Curso</h2>
+
+<CursoFormulario onValidSubmit=" GrabarModificacion" Curso=" curso" onCancel="Cancelar" />
+
+
+
+
+
+@code {
+
+    private Curso curso;
+  //  public int CursoId { get; set; }
+    [Parameter] public string ID { get; set; }
+    [Parameter] public string Nomcurso { get; set; }
+    [Parameter] public string Tutcurso { get; set; }
+    [Parameter] public string Rescurso { get; set; }
+
+
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        curso = new()
+
+        {
+            Id = ID,
+            NombreCurso = Nomcurso,
+            TutorCurso = Tutcurso,
+            Resumen = Rescurso
+
+        };
+    }
+
+    private async Task GrabarModificacion()
+    {
+
+        Console.WriteLine($"Graba modificacion {curso.NombreCurso}");
+        navigationManager.NavigateTo("/cursos");
+    }
+
+    private async Task Cancelar()
+    {
+
+        navigationManager.NavigateTo("/cursos");
+    }
+
+
+
+
+}

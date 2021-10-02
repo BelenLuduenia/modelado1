@@ -1,0 +1,25 @@
+﻿@page "/cursos/crear"
+@inject NavigationManager   navigationManager
+
+
+<h2>Nuevo Curso</h2>
+
+<CursoFormulario  onValidSubmit=" GrabarNuevoCurso" Curso=" curso" onCancel="Cancelar"/> 
+
+@code {
+
+    private Curso curso = new Curso();
+
+    private async Task GrabarNuevoCurso()
+    {
+
+        Console.WriteLine($"Graba {curso.NombreCurso}");
+        navigationManager.NavigateTo("/cursos");
+    }
+
+    private async Task Cancelar()
+    {
+
+        navigationManager.NavigateTo("/cursos");
+    }
+}
