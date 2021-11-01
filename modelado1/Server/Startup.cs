@@ -42,8 +42,9 @@ namespace modelado1.Server
 
 
 
-            services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+           // services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
+            services.AddControllersWithViews();
             services.AddRazorPages();
         }
 

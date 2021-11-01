@@ -28,16 +28,17 @@ namespace modelado1.Server.Controllers
         public async Task <ActionResult<List<Curso>>> Get()
         {
             //select*from cursos.....sql
-            return await context.Cursos.Include(x => x.Horarios).ToListAsync();
+           // return await context.Cursos.Include(x => x.Horarios).ToListAsync();
+            return await context.Cursos.ToListAsync();
             //devuelve una lista de cursos
         }
 
         [HttpGet("{id:int}")]
-
+        // TRAE SOLAMENTE UN OBJETO CURSO
         public async Task<ActionResult<Curso>> Get(int id)
         {
             //select*from cursos where Id=id.....sql
-            var curso = await context.Cursos.Where(X => X.Id == id.ToString()).FirstOrDefaultAsync();
+            var curso = await context.Cursos.Where(X => X.Id == id).FirstOrDefaultAsync();
 
             if (curso == null)
             {
@@ -47,8 +48,8 @@ namespace modelado1.Server.Controllers
             return curso;
         }
 
-        [HttpPost] // crea o inserta un gegistro nuevo en una tabla en una la base de datos 
-
+        [HttpPost] // crea o inserta un registro nuevo en una tabla en una  base de datos 
+        // SIRVE PARA GRABAR EN LA BASE DE DATOS 
         public async Task< ActionResult<Curso>> Post(Curso curso)
         {
            
@@ -76,13 +77,13 @@ namespace modelado1.Server.Controllers
 
         public async Task<ActionResult<Curso>> Put(int id,[FromBody]Curso curso)
         {
-            if (id.ToString() != curso.Id)
+            if (id!= curso.Id)
             {
                 return BadRequest("datos incorrectos");
             }
 
 
-            var pe = await context.Cursos.Where(X => X.Id == id.ToString()).FirstOrDefaultAsync(); // hay que ver q exista el dato en la base de datos 
+            var pe = await context.Cursos.Where(X => X.Id == id).FirstOrDefaultAsync(); // hay que ver q exista el dato en la base de datos 
              //si no existe le contesto con un notfound 404
 
             if (pe == null)
@@ -111,11 +112,11 @@ namespace modelado1.Server.Controllers
         }
 
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}")] // para borrar 
         public async Task<ActionResult> Delete(int id) // metodo borrar
         {
             
-            var curso = await context.Cursos.Where(X => X.Id == id.ToString()).FirstOrDefaultAsync();
+            var curso = await context.Cursos.Where(X => X.Id == id).FirstOrDefaultAsync();
 
             if (curso == null)
             {

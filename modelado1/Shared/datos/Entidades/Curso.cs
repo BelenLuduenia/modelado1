@@ -19,7 +19,7 @@ namespace modelado1.Comunes.datos.Entidades
         
 
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         //---------------------------------------------------
 
         // aca le digo que el nombre del curso no puede ser nulo 

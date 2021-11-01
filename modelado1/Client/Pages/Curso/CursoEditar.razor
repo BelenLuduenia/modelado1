@@ -1,51 +1,67 @@
-﻿@page "/cursos/editar/{ID}/{Nomcurso}/{Tutcurso}/{Rescurso}"
+﻿@page "/cursos/editar/{CursoId:int}"
    <!---->
 @inject NavigationManager   navigationManager
+@inject IHttpService http
+
+
 
 <h2>Modificar Curso</h2>
 
 <CursoFormulario onValidSubmit=" GrabarModificacion" Curso=" curso" onCancel="Cancelar" />
 
 
-
-
-
 @code {
 
     private Curso curso;
-  //  public int CursoId { get; set; }
-    [Parameter] public string ID { get; set; }
-    [Parameter] public string Nomcurso { get; set; }
-    [Parameter] public string Tutcurso { get; set; }
-    [Parameter] public string Rescurso { get; set; }
+    [Parameter] public int CursoId { get; set; }
+    //  [Parameter] public int ID { get; set; }
+    // [Parameter] public string Nomcurso { get; set; }
+    // [Parameter] public string Tutcurso { get; set; }
+    // [Parameter] public string Rescurso { get; set; }
 
 
 
     protected async override Task OnInitializedAsync()
     {
 
-        curso = new()
+        await MostrarCurso();
 
+    }
+
+    private async Task MostrarCurso()
+    {
+        var httpRespuesta = await http.Get<Curso>($"api/Cursos/{CursoId}");
+        if (httpRespuesta.Error)
         {
-            Id = ID,
-            NombreCurso = Nomcurso,
-            TutorCurso = Tutcurso,
-            Resumen = Rescurso
 
-        };
+            var body = await httpRespuesta.GetBody();
+
+        }
+        else
+        {
+
+            curso = httpRespuesta.Respuesta;
+        }
     }
 
     private async Task GrabarModificacion()
     {
+        var httpRespuesta = await http.Put<Curso>($"api/Cursos/{CursoId}",curso);
+        if (httpRespuesta.Error)
+        {
 
-        Console.WriteLine($"Graba modificacion {curso.NombreCurso}");
-        navigationManager.NavigateTo("/cursos");
+            var body = await httpRespuesta.GetBody();
+
+        }
+
+        navigationManager.NavigateTo("/Cursos");
+
     }
 
-    private async Task Cancelar()
+    private void Cancelar()
     {
 
-        navigationManager.NavigateTo("/cursos");
+        navigationManager.NavigateTo("/Cursos");
     }
 
 

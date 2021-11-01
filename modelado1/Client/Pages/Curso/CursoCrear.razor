@@ -1,10 +1,12 @@
 ﻿@page "/cursos/crear"
-@inject NavigationManager   navigationManager
+
+@inject NavigationManager navigationManager
+@inject IHttpService http
 
 
 <h2>Nuevo Curso</h2>
 
-<CursoFormulario  onValidSubmit=" GrabarNuevoCurso" Curso=" curso" onCancel="Cancelar"/> 
+<CursoFormulario onValidSubmit=" GrabarNuevoCurso" Curso= "curso" onCancel="Cancelar" />
 
 @code {
 
@@ -13,13 +15,23 @@
     private async Task GrabarNuevoCurso()
     {
 
-        Console.WriteLine($"Graba {curso.NombreCurso}");
-        navigationManager.NavigateTo("/cursos");
+        var httpRespuesta = await http.Post<Curso>("api/Cursos", curso);
+        if (httpRespuesta.Error)
+        {
+
+            var body = await httpRespuesta.GetBody();
+        }
+
+        navigationManager.NavigateTo("/Cursos");
+        // Console.WriteLine($"Graba {curso.NombreCurso}");
+
     }
 
-    private async Task Cancelar()
+    private void Cancelar()
     {
 
-        navigationManager.NavigateTo("/cursos");
+         navigationManager.NavigateTo("/Cursos");
+
+
     }
 }
